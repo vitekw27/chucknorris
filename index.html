@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuck Norris vtipy</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<h1>Chuck Norris vtipy</h1>
+<div id="joke">Klikněte na tlačítko pro načtení vtipu!</div>
+<button id="fetchJokeBtn">Náhodný vtip</button>
+<ul class="categories">
+    <li>
+        <a href="" data-category="animal">
+            animal
+        </a>
+    </li>
+    <li>
+        <a href="" data-category="career">
+            career
+        </a>
+    </li>
+    <li>
+        <a href="" data-category="celebrity">
+            celebrity
+        </a>
+    </li>
+    <li>
+        <a href="" data-category="dev">
+            dev
+        </a>
+    </li>
+</ul>
+
+<script>
+    document.getElementById('fetchJokeBtn').addEventListener('click', fetchJoke);
+
+    document.querySelectorAll('.categories a').forEach(categoryLink => {
+        categoryLink.addEventListener('click', function(event) {
+            event.preventDefault();
+            fetchJokeByCategory(this.dataset.category);
+        });
+    });
+
+    function fetchJoke() {
+        fetch('https://api.chucknorris.io/jokes/random')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('joke').innerText = data.value;
+            })
+            .catch(error => console.error('Error fetching joke:', error));
+    }
+
+    function fetchJokeByCategory(category) {
+        fetch(`https://api.chucknorris.io/jokes/random?category=${category}`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('joke').innerText = data.value;
+            })
+            .catch(error => console.error('Error fetching joke:', error));
+    }
+</script>
+</body>
+</html>
